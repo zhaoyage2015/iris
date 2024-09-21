@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 import shap
 import matplotlib.pyplot as plt
-
+import streamlit.components.v1 as components
 
 model = joblib.load('catboost_model.pkl')
 
@@ -30,12 +30,14 @@ if st.button("Predict"):
     st.write(f"**Prediction probability:** {probability[0]}")
 
     
-    explainer = shap.TreeExplainer(model)
-    shap_values = explainer.shap_values(input_data)
+    def st_shap(plot, height=None):
+    shap_html = f"<head>{shap.getjs()}</head><body>{plot.html()}</body>"
+    components.html(shap_html, height=height)
 
-    
-    st.header("SHAP Force Plot")
-    fig, ax = plt.subplots()
-shap.force_plot(explainer.expected_value, shap_values[0], input_data, matplotlib=True)
-plt.savefig("shap_force_plot.png", bbox_inches='tight', dpi=1200)
-st.image("shap_force_plot.png")
+
+explainer = shap.TreeExplainer(model)
+shap_values = explainer.shap_values(input_data)
+
+
+st.header("SHAP Force Plot")
+st_shap(shap.force_plot(explainer.expected_value, shap_values[0], input_data))
