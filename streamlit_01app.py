@@ -4,7 +4,6 @@ import numpy as np
 import pandas as pd
 import shap
 import matplotlib.pyplot as plt
-import streamlit.components.v1 as components
 
 model = joblib.load('catboost_model.pkl')
 
