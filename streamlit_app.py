@@ -30,13 +30,12 @@ if st.button("Predict"):
     st.write(f"**Prediction probability:** {probability[0]}")
 
     
-    explainer = shap.Explainer(model)
+    explainer = shap.TreeExplainer(model)
     shap_values = explainer.shap_values(input_data)
 
     
     st.header("SHAP Force Plot")
-    shap.initjs()
-    plt.figure()
-    shap.force_plot(explainer.expected_value, shap_values[0], input_data, matplotlib=True)
-    plt.savefig("shap_force_plot.png", bbox_inches='tight')
-    st.image("shap_force_plot.png")
+    fig, ax = plt.subplots()
+shap.force_plot(explainer.expected_value, shap_values[0], input_data, matplotlib=True)
+plt.savefig("shap_force_plot.png", bbox_inches='tight', dpi=1200)
+st.image("shap_force_plot.png")
