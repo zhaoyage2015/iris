@@ -35,9 +35,10 @@ st.header("SHAP Force Plot")
     
 for i in range(len(shap_values)):
     st.subheader(f"Class {i} SHAP Force Plot")
+    shap_value_for_class = shap_values[i][0]
     
     fig, ax = plt.subplots()
-    shap.force_plot(explainer.expected_value[i], shap_values[i][0], pd.DataFrame([feature_values], columns=feature_names), matplotlib=True)
+    shap.force_plot(explainer.expected_value[i], shap_value_for_class, pd.DataFrame([feature_values], columns=feature_names), matplotlib=True)
 
     plt.savefig(f"shap_force_plot_class_{i}.png", bbox_inches='tight', dpi=1200)
     st.image(f"shap_force_plot_class_{i}.png")
