@@ -10,7 +10,7 @@ model = joblib.load('catboost_model.pkl')
 
 st.title("CatBoost Prediction with SHAP Explanation")
 
-
+feature_names = ['sepal_length', 'sepal_width', 'petal_length', 'petal_width']
 st.header("Enter input values")
 sepal_length = st.number_input('Sepal length:', min_value=4.0, max_value=8.0, value=5.1)
 sepal_width = st.number_input('Sepal width:', min_value=2.0, max_value=4.5, value=3.5)
@@ -33,7 +33,7 @@ if st.button("Predict"):
     shap_values = explainer.shap_values(pd.DataFrame([feature_values], columns=feature_names))
 
     st.header("SHAP Force Plot")
-
+    fig, ax = plt.subplots()
     shap.force_plot(explainer.expected_value, shap_values[0], pd.DataFrame([feature_values], columns=feature_names), matplotlib=True)
     plt.savefig("shap_force_plot.png", bbox_inches='tight', dpi=1200)
     st.image("shap_force_plot.png")
